@@ -44,10 +44,9 @@ THIRD_APPS = [
 ]
 PROJECT_APPS = [
     'apps.base',
-    # 'apps.myapp',
     'apps.pages',
-    # 'apps.student',
 ]
+
 INSTALLED_APPS = DJANGO_APPS + THIRD_APPS + PROJECT_APPS
 
 MIDDLEWARE = [
@@ -58,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 ROOT_URLCONF = 'core.urls'
 
@@ -74,6 +74,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # Apps
+                'base.context_processors.context_social',
+                'base.context_processors.context_global',
             ],
         },
     },

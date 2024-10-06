@@ -43,6 +43,7 @@ THIRD_APPS = [
     
 ]
 PROJECT_APPS = [
+    'apps.contas',
     'apps.base',
     'apps.pages',
 ]
@@ -76,13 +77,15 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 # Apps
                 'base.context_processors.context_social',
-                'base.context_processors.context_global',
+                
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'core.wsgi.application'
+
+AUTH_USER_MODEL = "contas.MyUser"#TODO qual o nosso modelo de usuario
 
 
 #TODO Database
@@ -162,3 +165,15 @@ EMAIL_PORT = os.getenv('EMAIL_PORT')
 EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS') 
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
+
+
+# --- Messages --- #
+from django.contrib.messages import constants
+
+MESSAGE_TAGS = {
+	constants.ERROR: 'alert-danger',
+	constants.WARNING: 'alert-warning',
+	constants.DEBUG: 'alert-danger',
+	constants.SUCCESS: 'alert-success',
+	constants.INFO: 'alert-info',
+}

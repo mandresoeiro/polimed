@@ -26,10 +26,9 @@ def login_view(request):
 
 # register
 
-
 def register_view(request):
     if request.method == "POST":
-        form = CustomUserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)#TODO Pegar os dados do usuario
         if form.is_valid():
             usuario = form.save(commit=False)
             usuario.is_valid = False

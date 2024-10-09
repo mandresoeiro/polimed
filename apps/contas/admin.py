@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-# from contas.forms import UserCreationForm #TODO Add form
+#TODO from contas.forms import UserCreationForm 
 from contas.models import MyUser
 
 class MyUserAdmin(UserAdmin):

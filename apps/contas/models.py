@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
+
 class MyUserManager(BaseUserManager):
     def create_user(self, email, password=None, **kwargs):
         if not email:
@@ -15,13 +16,16 @@ class MyUserManager(BaseUserManager):
         kwargs.setdefault('is_superuser', True)
         return self.create_user(email, password, **kwargs)
 
+
 class MyUser(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(unique=True,max_length=255)
+    email = models.EmailField(unique=True, max_length=255)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    is_active = models.BooleanField(default=True)#TODO saber se ususario esta ativo
+    # TODO saber se ususario esta ativo
+    is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    date_joined = models.DateTimeField('date joined', auto_now_add=True)#TODO data de cadastro
+    date_joined = models.DateTimeField(
+        'date joined', auto_now_add=True)  # TODO data de cadastro
 
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'

@@ -1,13 +1,18 @@
 from django.contrib.auth.models import Group
 from contas.forms import CustomUserCreationForm
 from django.urls import path
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
 
 def timeout_view(request):
     return render(request, 'timeout.html')
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')
 
 
 def login_view(request):
@@ -26,9 +31,10 @@ def login_view(request):
 
 # register
 
+
 def register_view(request):
     if request.method == "POST":
-        form = CustomUserCreationForm(request.POST)#TODO Pegar os dados do usuario
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             usuario = form.save(commit=False)
             usuario.is_valid = False

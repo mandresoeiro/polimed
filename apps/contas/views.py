@@ -9,7 +9,7 @@ from django.contrib import messages
 def timeout_view(request):
     return render(request, 'timeout.html')
 
-
+#TODO add urls.py um path para logout
 def logout_view(request):
     logout(request)
     return redirect('home')

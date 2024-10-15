@@ -1,18 +1,20 @@
 from django.db import models
+
+# TODO Modelo customizados de usuario
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
 
-class MyUserManager(BaseUserManager):
-    def create_user(self, email, password=None, **kwargs):
-        if not email:
-            raise ValueError('Users must have an email address')
-        user = self.model(email=self.normalize_email(email), **kwargs)
-        user.set_password(password)
-        user.save()
-        return user
+class MyUserManager(BaseUserManager):#TODO Gerenciador de usuários
+    def create_user(self, email, password=None, **kwargs):#TODO Cria um novo usuario
+        if not email:#TODO Verifica se o email esta vazio
+            raise ValueError('Users must have an email address')#TODO Todos usuários devem ter um endereço de e-mail
+        user = self.model(email=self.normalize_email(email), **kwargs) #TODO email normalizado
+        user.set_password(password)#TODO Senha criptografada
+        user.save()#TODO Salva o novo usuario
+        return user #TODO Retorna o novo usuario
 
     def create_superuser(self, email, password, **kwargs):
-        kwargs.setdefault('is_staff', True)
+        kwargs.setdefault('is_staff', True)#TODO Permissão de administrador
         kwargs.setdefault('is_superuser', True)
         return self.create_user(email, password, **kwargs)
 

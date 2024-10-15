@@ -1,8 +1,9 @@
-from django.urls import path
+from django.urls import path, include
 from contas import views
 from django.shortcuts import render
 
 urlpatterns = [
+    path("", include("django.contrib.auth.urls")),  # Django auth
     path('timeout/',  views.timeout_view, name='timeout'),
     path('sair/', views.logout_view, name='logout'),
     path('entrar/', views.login_view, name='login'),

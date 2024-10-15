@@ -2,6 +2,7 @@ import os
 import sys #TODO Diz para Django onde estão nossos aplicativos
 from dotenv import load_dotenv
 
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR,'templates')
 STATIC_DIR=os.path.join(BASE_DIR,'static')
@@ -31,22 +32,23 @@ ALLOWED_HOSTS = []
 
 #TODO Aplicativos do django
 DJANGO_APPS = [
+    'apps.contas',  # adiciona
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'accounts',
 ]
+
 THIRD_APPS = [
-    
+    "corsheaders",
 ]
 PROJECT_APPS = [
-    'apps.contas',
+
     'apps.base',
     'apps.pages',
-]
+]   
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_APPS + PROJECT_APPS
 
@@ -123,6 +125,17 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# --- Login Logout User --- # 
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+
+
+#TODO em debug deve ser False, ja em produção deve ser True(retirada)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 
 

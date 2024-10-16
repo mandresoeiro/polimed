@@ -1,6 +1,6 @@
 from django.urls import path, include
 from contas import views
-from django.shortcuts import render
+
 
 urlpatterns = [
     path("", include("django.contrib.auth.urls")),  # Django auth
@@ -11,3 +11,13 @@ urlpatterns = [
 
 
 ]
+
+
+# TODO EXEMPLE DE URLS
+#     from django.contrib.auth import views as auth_views
+#     #Para não confundir com views do django apelida de auth_views
+
+#     urlpatterns = [
+#         "chances-password/", auth_views.PasswordChangeView.as_view(),
+# template_name="chances-password.html"),
+#     ]

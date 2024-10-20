@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from contas.models import MyUser
 
-#TODO Quando for customizar o formulario pode colocar "custom", no campo. Ex. CustomUserCreationForm
+
 class CustomUserCreationForm(UserCreationForm):
     password1 = forms.CharField(label="Senha", widget=forms.PasswordInput)
     password2 = forms.CharField(
@@ -12,7 +12,6 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = MyUser
         fields = ('email', 'first_name', 'last_name', 'password1', 'password2')
-        #TODO Renomeando as labels
         labels = {
             'email': 'Email',
             'first_name': 'Nome',
@@ -20,15 +19,14 @@ class CustomUserCreationForm(UserCreationForm):
             'is_active': 'Usúario Ativo?'
         }
 
-    def __init__(self, *args, **kwargs):#TODO No momento que executar o formulario sera feito um for 
+    def __init__(self, *args, **kwargs):
         super(CustomUserCreationForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             if field.widget.__class__ in [forms.CheckboxInput, forms.RadioSelect]:
-                field.widget.attrs['class'] = 'form-check-input'#TODO Adiciona a classe bootstrap
+                field.widget.attrs['class'] = 'form-check-input'
             else:
                 field.widget.attrs['class'] = 'form-control'
 
-    #TODO Da documentação do django, para fazer o clean de password2, p quando n fizer math.
     def clean_password2(self):
         # Check that the two password entries match
         password1 = self.cleaned_data.get("password1")
@@ -38,20 +36,20 @@ class CustomUserCreationForm(UserCreationForm):
         return password2
 
     def save(self, commit=True):
-        # Save the provided password in hashed format (O format hashed no Django é um conjunto de elementos 
-        # que inclui o hastype, salt e hash, separados por um caracter dolar ('$'). )
+        # Save the provided password in hashed format
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password1"])
         if commit:
             user.save()
         return user
 
-class UserChangeForm(forms.ModelForm):#TODO Cria um formulario para alterar o usuario
+
+class UserChangeForm(forms.ModelForm):
     class Meta:
         model = MyUser
         fields = ['email', 'first_name', 'last_name', 'is_active']
-        # help_texts = {'username': None}#TODO Remove o campo de username(MENSAGENS DE AJUDA)
-        labels = {#TODO Renomeando as labels
+        # help_texts = {'username': None}
+        labels = {
             'email': 'Email',
             'first_name': 'Nome',
             'last_name': 'Sobrenome',
@@ -59,16 +57,15 @@ class UserChangeForm(forms.ModelForm):#TODO Cria um formulario para alterar o us
         }
 
     def __init__(self, *args, **kwargs):
+        # get the 'user' from kwargs dictionary
         self.user = kwargs.pop('user', None)
-        super(UserChangeForm, self).__init__(*args, **kwargs)        
-        
+        super(UserChangeForm, self).__init__(*args, **kwargs)
+
         if not self.user.groups.filter(name__in=['administrador', 'colaborador']).exists():
-            for group in ['is_active']: #TODO poderi alterar outros campos. Ex:. First Name, Last Name
-                del self.fields[group] #TODO Remove do formulário
-        
-        
-        super().__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():#TODO Pegando os campos do formulario
+            for group in ['is_active']:
+                del self.fields[group]
+
+        for field_name, field in self.fields.items():
             if field.widget.__class__ in [forms.CheckboxInput, forms.RadioSelect]:
                 field.widget.attrs['class'] = 'form-check-input'
             else:

@@ -1,6 +1,7 @@
 from django.contrib.messages import constants
+# from corsheaders.defaults import default_headers
 import os
-import sys  # TODO Diz para Django onde estão nossos aplicativos
+import sys
 from dotenv import load_dotenv
 
 

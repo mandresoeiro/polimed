@@ -7,6 +7,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
       # path("accounts/", include("django.contrib.auth.urls")), Versão do Django
     path("contas/", include("contas.urls")),
+    path("perfil/", include("perfil.urls")),   # url do app de perfil
     path('', include('pages.urls')),
 ]
 

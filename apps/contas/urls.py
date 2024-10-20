@@ -10,17 +10,8 @@ urlpatterns = [
     path('criar-conta/', views.register_view, name='register'),
     path('atualizar-usuario/', views.atualizar_meu_usuario,
          name='atualizar_meu_usuario'),
-    path('atualizar-usuario/<int:user_id>/',
+    path('atualizar-usuario/<slug:username>/',
          views.atualizar_usuario, name='atualizar_usuario'),
 
 
 ]
-
-# TODO EXEMPLE DE URLS
-#     from django.contrib.auth import views as auth_views
-#     #Para não confundir com views do django apelida de auth_views
-
-#     urlpatterns = [
-#         "chances-password/", auth_views.PasswordChangeView.as_view(),
-# template_name="chances-password.html"),
-#     ]

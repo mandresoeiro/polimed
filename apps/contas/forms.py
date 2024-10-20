@@ -45,3 +45,23 @@ class CustomUserCreationForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+class UserChangeForm(forms.ModelForm):#TODO Cria um formulario para alterar o usuario
+    class Meta:
+        model = MyUser
+        fields = ['email', 'first_name', 'last_name', 'is_active']
+        # help_texts = {'username': None}#TODO Remove o campo de username(MENSAGENS DE AJUDA)
+        labels = {#TODO Renomeando as labels
+            'email': 'Email',
+            'first_name': 'Nome',
+            'last_name': 'Sobrenome',
+            'is_active': 'Usúario Ativo?'
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():#TODO Pegando os campos do formulario
+            if field.widget.__class__ in [forms.CheckboxInput, forms.RadioSelect]:
+                field.widget.attrs['class'] = 'form-check-input'
+            else:
+                field.widget.attrs['class'] = 'form-control'

@@ -59,6 +59,14 @@ class UserChangeForm(forms.ModelForm):#TODO Cria um formulario para alterar o us
         }
 
     def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super(UserChangeForm, self).__init__(*args, **kwargs)        
+        
+        if not self.user.groups.filter(name__in=['administrador', 'colaborador']).exists():
+            for group in ['is_active']: #TODO poderi alterar outros campos. Ex:. First Name, Last Name
+                del self.fields[group] #TODO Remove do formulário
+        
+        
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():#TODO Pegando os campos do formulario
             if field.widget.__class__ in [forms.CheckboxInput, forms.RadioSelect]:

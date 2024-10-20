@@ -1,6 +1,6 @@
 from django.urls import path, include
 from contas import views
-
+from django.shortcuts import render
 
 urlpatterns = [
     path("", include("django.contrib.auth.urls")),  # Django auth
@@ -9,12 +9,12 @@ urlpatterns = [
     path('entrar/', views.login_view, name='login'),
     path('criar-conta/', views.register_view, name='register'),
     path('atualizar-usuario/', views.atualizar_meu_usuario,
-        name='atualizar_meu_usuario'),
+         name='atualizar_meu_usuario'),
     path('atualizar-usuario/<int:user_id>/',
          views.atualizar_usuario, name='atualizar_usuario'),
 
-]
 
+]
 
 # TODO EXEMPLE DE URLS
 #     from django.contrib.auth import views as auth_views

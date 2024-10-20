@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 # TODO Obrigando o usuario estar logado p acessar a view (atualizar_usuario) Função login_required
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render, redirect
+from contas.permissions import grupo_colaborador_required
 from contas.models import MyUser
 from contas.forms import CustomUserCreationForm, UserChangeForm
 from django.contrib import messages
@@ -58,30 +59,57 @@ def register_view(request):
     return render(request, "register.html", {"form": form})
 
 
+def register_view(request):
+    if request.method == "POST":
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            usuario = form.save(commit=False)
+            usuario.is_valid = False
+            usuario.save()
+
+            group = Group.objects.get(name='usuario')
+            usuario.groups.add(group)
+
+            messages.success(
+                request, 'Registrado. Agora faça o login para começar!')
+            return redirect('login')
+        else:
+            # Tratar quando usuario já existe, senhas... etc...
+            messages.error(request, 'A senha deve ter pelo menos 1 caractere maiúsculo, \
+                1 caractere especial e no minimo 8 caracteres.')
+    form = CustomUserCreationForm()
+    return render(request, "register.html", {"form": form})
+
+
 @login_required()
 def atualizar_meu_usuario(request):
-    if request.method == 'POST': #TODO pegar os dados/user preenchidos
-        form = UserChangeForm(request.POST, instance=request.user)
+    if request.method == 'POST':
+        form = UserChangeForm(
+            request.POST, instance=request.user, user=request.user)
         if form.is_valid():
             form.save()
             messages.success(request, 'Seu perfil foi atualizado com sucesso!')
             return redirect('home')
     else:
-        form = UserChangeForm(instance=request.user)
+        form = UserChangeForm(instance=request.user, user=request.user)
     return render(request, 'user_update.html', {'form': form})
 
 
 @login_required()
-def atualizar_usuario(request, user_id): # TODO usar a mesma rota com (user_id).
+@grupo_colaborador_required(['administrador', 'colaborador'])
+def atualizar_usuario(request, user_id):
     user = get_object_or_404(MyUser, pk=user_id)
     if request.method == 'POST':
-        # TODO A instancia é meu user autenticado
-        form = UserChangeForm(request.POST, instance=user)
+        form = UserChangeForm(request.POST, instance=user, user=request.user)
         if form.is_valid():
             form.save()
             messages.success(
                 request, 'O perfil de usuário foi atualizado com sucesso!')
             return redirect('home')
     else:
-        form = UserChangeForm(instance=user)
-    return render(request, 'user_update.html', {'form': form}) # TODO usar o mesmo template
+        form = UserChangeForm(request.POST, instance=user, user=request.user)
+    return render(request, 'user_update.html', {'form': form})
+
+
+# TODO Instancia é usada para preencher o formulário com dados de um objeto existente.
+# Esse (user=request.user) é usado p/ obter informações do usuário que estiver logado.

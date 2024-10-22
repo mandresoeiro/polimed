@@ -47,12 +47,11 @@ THIRD_APPS = [
     # "corsheaders",
 ]
 PROJECT_APPS = [
-
-    'apps.base',
-    'apps.perfil',
-    'apps.pages',
+    "apps.base",
+    "apps.config",
+    "apps.pages",
+    "apps.perfil",
 ]
-
 INSTALLED_APPS = DJANGO_APPS + THIRD_APPS + PROJECT_APPS
 
 MIDDLEWARE = [

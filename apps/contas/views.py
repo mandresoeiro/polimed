@@ -47,9 +47,6 @@ def register_view(request):
             group = Group.objects.get(name='usuario')
             usuario.groups.add(group)
 
-            # Cria instancia perfil do usuário
-            Perfil.objects.create(usuario=usuario)
-
             messages.success(
                 request, 'Registrado. Agora faça o login para começar!')
             return redirect('login')

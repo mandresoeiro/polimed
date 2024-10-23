@@ -86,3 +86,10 @@ def atualizar_usuario(request, usermane):
     else:
         form = UserChangeForm(request.POST, instance=user, user=request.user)
     return render(request, 'user_update.html', {'form': form})
+
+
+@login_required
+@grupo_colaborador_required(['administrador','colaborador'])
+def lista_usuarios(request): # Lista Cliente 
+    lista_usuarios = MyUser.objects.select_related('perfil').filter(is_superuser=False) 
+    return render(request, 'lista-usuarios.html', {'lista_usuarios': lista_usuarios})
